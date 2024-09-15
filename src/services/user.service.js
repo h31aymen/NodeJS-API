@@ -4,6 +4,10 @@ const get= (id)=>{
     return funcDAO.getUser(id);
 }
 
+const getAll= ()=>{
+    return funcDAO.getUsers();
+}
+
 const update= (id, details)=>{
     return funcDAO.updateUser(id, details);
 }
@@ -18,5 +22,5 @@ const remove= (id)=>{
 }
 
 export default {
-    get, update, add, remove
+    get, getAll, update, add, remove
 }

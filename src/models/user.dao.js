@@ -10,6 +10,10 @@ const getUser = (userId)=>{
     console.log(gotten)
     return gotten;
 }
+
+const getUsers= ()=>{
+    return users;
+}
     
 const updateUser= (userId, details)=>{
     const key=null;
@@ -19,7 +23,7 @@ const updateUser= (userId, details)=>{
             user={...user, ...details};
         }
     })
-    if(key != null)return users.key
+    if(key != null)return users.key // i think if i returned 'key', and the checking will be in the routes file
     else return key;
 }
 
@@ -30,7 +34,8 @@ const addUser= (details)=>{
 }
 
 const removeUser= (userId)=>{
-    const doesUserExist= users.find((user, index)=>{
+    const doesUserExist= false;
+    doesUserExist= users.find((user, index)=>{
         if (user.id === userId){
             users.splice(index, 1);
             return true;
@@ -39,5 +44,5 @@ const removeUser= (userId)=>{
     return doesUserExist // returning the removed user object
  }
 export default{
-    getUser, updateUser, addUser, removeUser
+    getUser, getUsers, updateUser, addUser, removeUser
 }
