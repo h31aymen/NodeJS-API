@@ -11,21 +11,21 @@ const status={
     "success": "OK",
     "failed": "NO"
 }
-router.get("/ping",(req, res)=>{
+router.get("/ping", (req, res)=>{
     res.status(httpCodes.OK).send({
         status: status.success,
         message:"Welcome"
     })
 })
 
-router.get("/:id", (req, res)=>{
+router.get("/:id",  expressYupMiddleware( {schemaValidator:schemas.getUser, expectedStatusCode: httpCodes.BAD_REQUEST}), (req, res)=>{
     var id= parseInt(req.params.id);
     var getting= services.get(id);
-    console.log(getting)
+
     if(typeof getting != null){
         res.status(httpCodes.OK);
         res.json({
-            message: "Hello,"+getting.name, 
+            message: "Hello", 
             status: status.success, 
             getting
         });
@@ -41,26 +41,27 @@ router.get("/:id", (req, res)=>{
 
 router.put("/:id", expressYupMiddleware( {schemaValidator:schemas.updateUser, expectedStatusCode: httpCodes.BAD_REQUEST}),(req, res)=>{
     var id= parseInt(req.params.id);
-    var details=req.body.details// just a sample, to remove it after (i already removed it )
+    var details=req.body// just a sample, to remove it after (i already removed it )
+    console.log(details)
     const updatedUser= services.update(id, details);
-    if (updatedUser!=null){
-        res.status(httpCodes.OK).send({
-            message: `the user with id: ${id} is updated`,
-            status: status.success, 
-            updatedUser
-        })
-    }else{
-        res.status(httpCodes.NOT_FOUND).send({
+    if (updatedUser==null){
+        return res.status(httpCodes.NOT_FOUND).send({
             message: `the user with id: ${id} was not found `,
             status: status.failed
+        })
+    }else{
+        return res.status(httpCodes.OK).send({
+            message: `the user with id: ${id} and key ${updatedUser} is updated`,
+            status: status.success, 
+            updatedUser
         })
     }
 })
 
 
 router.post("/", expressYupMiddleware( {schemaValidator:schemas.addUser, expectedStatusCode: httpCodes.BAD_REQUEST}), (req, res)=>{
-    // const {body: req_body}= req;
-    var addedUser= services.add(req.body)
+    const {body: req_body}= req;
+    var addedUser= services.add(req_body)
     if(!req.body.name){
         return res.status(httpCodes.BAD_REQUEST).send({
             "status": status.failed,
@@ -73,7 +74,7 @@ router.post("/", expressYupMiddleware( {schemaValidator:schemas.addUser, expecte
     })
 })
 
-router.delete("/remove/:id", (res, res)=>{
+router.delete("/remove/:id", (req, res)=>{
     var id= parseInt(req.params.id)
     const removedUser= services.remove(id);
 
@@ -90,4 +91,5 @@ router.delete("/remove/:id", (res, res)=>{
     })
 })
 
-export default router; // module.export= router;
+// export default router; // 
+module.exports= router;

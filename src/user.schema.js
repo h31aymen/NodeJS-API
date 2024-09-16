@@ -2,39 +2,45 @@ import * as Yup from 'yup';
 
 
 const addUser= {
-    schema: {
-      body: Yup.object().shape({
+  schema: {
+    body: {
+      yupSchema: Yup.object().shape({
         name: Yup.string(),
         email:Yup.string().email(),
         country: Yup.string(),
         age: Yup.number()
       })
     }
+  }
 }
 
 const getUser={
-    schema: {
-        params:Yup.object().shape({
-
+  schema: {
+      params:{
+        yupSchema: Yup.object().shape({
+          id: Yup.number().required()
         })
-    }
+      }
+  }
 }
 
 const updateUser= {
-    schema: {
-        body: Yup.object().shape({
-          name: {
+  schema: {
+    body: {
+      yupSchema: Yup.object().shape({
             name: Yup.string(),
             email:Yup.string().email(),
-            country: Yup.string(),
-            age: Yup.number()
-          }
-        }),
-        params:Yup.object().shape({
-            id: Yup.number().required()
-        })
-      }
-}
+            Country: Yup.string(),
+            Age: Yup.number()
+      })
+    },
+    params:{
+      yupSchema: Yup.object().shape({
+          id: Yup.number().required()
+      })
+    } 
+  }
+}  
 export default {
     getUser, addUser, updateUser
 }

@@ -8,9 +8,12 @@ route.get("/All", (req, res)=>{
     const users=services.getAll();
 
     if(users.length){
-        res.status(httpCodes.OK).send(users);
+        return res.status(httpCodes.OK).send(users);
     }
     return res.status(httpCodes.NOT_FOUND).send({
         message: "our DB is empty"
     })
 })
+
+// module.exports= route;
+export default route
