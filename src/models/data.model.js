@@ -5,7 +5,7 @@ const data=[
         Age:21,
         Country:"Algeria",
         email: "ha@iam.dz"
-    }
+    },
 ];
 
 export default data;
